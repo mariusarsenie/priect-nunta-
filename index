@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nunta Adina & Ionuț - 25 Octombrie 2025</title>
+
+  <script>
+    UPLOADCARE_PUBLIC_KEY = "673e6b589595c0acbfcb";
+  </script>
+  <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8f8;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #ff6f91;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    main {
+      max-width: 600px;
+      width: 90%;
+      margin-top: 20px;
+    }
+    #uploadButton {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.2rem;
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    #gallery img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      aspect-ratio: 1/1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    #noImages {
+      color: #999;
+      font-style: italic;
+      text-align: center;
+      margin-top: 20px;
+    }
+    footer {
+      margin-top: auto;
+      width: 100%;
+      text-align: center;
+      background: #ff6f91;
+      color: white;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Adina & Ionuț</h1>
+  <p>25 octombrie 2025</p>
+  <p>Încarcă un selfie de la nuntă direct cu telefonul!</p>
+</header>
+
+<main>
+  <input type="hidden" role="uploadcare-uploader" id="uploader" data-public-key="673e6b589595c0acbfcb" data-images-only data-clearable data-multiple />
+  <button id="uploadButton">📷 Fă o poză sau alege din galerie</button>
+
+  <section>
+    <h2>Galerie Selfie-uri</h2>
+    <div id="gallery"></div>
+    <p id="noImages">Nu există încă poze încărcate.</p>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Adina & Ionuț | Cu drag, de la nunta noastră 💞
+</footer>
+
+<script>
+  const widget = uploadcare.Widget(document.getElementById('uploader'));
+  const uploadBtn = document.getElementById('uploadButton');
+  const gallery = document.getElementById('gallery');
+  const noImages = document.getElementById('noImages');
+
+  // Lista pozelor încărcate (deocamdată goală)
+  const imageLinks = [];
+
+  function renderGallery() {
+    gallery.innerHTML = '';
+    if (imageLinks.length === 0) {
+      noImages.style.display = 'block';
+    } else {
+      noImages.style.display = 'none';
+      imageLinks.forEach(url => {
+        const img = document.createElement('img');
+        img.src = url + '-/preview/500x500/';
+        img.alt = 'Selfie nuntă';
+        gallery.appendChild(img);
+      });
+    }
+  }
+
+  renderGallery();
+
+  uploadBtn.addEventListener('click', () => {
+    widget.openDialog(null, { multiple: true }).done(files => {
+      files.forEach(file => {
+        const img = document.createElement('img');
+        img.src = file.cdnUrl + '-/preview/500x500/';
+        img.alt = 'Selfie încărcat';
+        gallery.appendChild(img);
+        noImages.style.display = 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
